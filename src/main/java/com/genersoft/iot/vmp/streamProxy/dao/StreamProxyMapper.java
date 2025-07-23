@@ -1,11 +1,14 @@
 package com.genersoft.iot.vmp.streamProxy.dao;
 
+import com.genersoft.iot.vmp.common.StreamInfo;
 import com.genersoft.iot.vmp.streamProxy.bean.StreamProxy;
 import com.genersoft.iot.vmp.streamProxy.dao.provider.StreamProxyProvider;
+import com.genersoft.iot.vmp.streamProxy.dto.StreamProxyDisplayDTO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 @Repository
@@ -93,4 +96,23 @@ public interface StreamProxyMapper {
             " stream_key = #{streamKey} " +
             " WHERE id=#{id}")
     void addStream(StreamProxy streamProxy);
+
+    @Select(            "SELECT\n" +
+            "    COALESCE(wdc.gb_name, '') AS name,\n" +
+            "    CASE\n" +
+            "        WHEN a.pulling = 1 THEN '正在拉流'\n" +
+            "        WHEN a.pulling = 0 THEN '尚未拉流'\n" +
+            "        END AS pulling,\n" +
+            "    CASE\n" +
+            "        WHEN a.enable = true THEN '启用'\n" +
+            "        WHEN a.enable = false THEN '未启用'\n" +
+            "        END AS enable\n" +
+            "FROM\n" +
+            "    wvp_stream_proxy a\n" +
+            "        LEFT JOIN\n" +
+            "    wvp273.wvp_device_channel wdc\n" +
+            "    ON wdc.data_device_id = a.id\n" +
+            "where a.media_server_id = #{mediaServerId};\n")
+    List<Map<String, Object>> selectById(@Param("mediaServerId") String mediaServerId);
+
 }

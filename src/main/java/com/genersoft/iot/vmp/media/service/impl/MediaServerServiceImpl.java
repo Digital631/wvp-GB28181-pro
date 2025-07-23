@@ -25,6 +25,8 @@ import com.genersoft.iot.vmp.service.bean.SSRCInfo;
 import com.genersoft.iot.vmp.storager.IRedisCatchStorage;
 import com.genersoft.iot.vmp.storager.dao.MediaServerMapper;
 import com.genersoft.iot.vmp.streamProxy.bean.StreamProxy;
+import com.genersoft.iot.vmp.streamProxy.dao.StreamProxyMapper;
+import com.genersoft.iot.vmp.streamProxy.dto.StreamProxyDisplayDTO;
 import com.genersoft.iot.vmp.utils.DateUtil;
 import com.genersoft.iot.vmp.vmanager.bean.ErrorCode;
 import com.genersoft.iot.vmp.vmanager.bean.WVPResult;
@@ -77,6 +79,8 @@ public class MediaServerServiceImpl implements IMediaServerService {
 
     @Autowired
     private MediaConfig mediaConfig;
+    @Autowired
+    private StreamProxyMapper streamProxyMapper;
 
 
     /**
@@ -1000,5 +1004,10 @@ public class MediaServerServiceImpl implements IMediaServerService {
             throw new ControllerException(ErrorCode.ERROR100.getCode(), "未找到mediaServer对应的实现类");
         }
         mediaNodeServerService.setRecordSpeed(mediaServer, app, stream, speed, schema);
+    }
+
+    @Override
+    public List<Map<String, Object>> getStreamInfoByAppAndStreamWithCheckAll(String mediaServerId) {
+        return streamProxyMapper.selectById(mediaServerId);
     }
 }

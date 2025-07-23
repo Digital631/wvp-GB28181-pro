@@ -8,6 +8,7 @@ import com.genersoft.iot.vmp.media.bean.MediaServer;
 import com.genersoft.iot.vmp.service.bean.MediaServerLoad;
 import com.genersoft.iot.vmp.service.bean.SSRCInfo;
 import com.genersoft.iot.vmp.streamProxy.bean.StreamProxy;
+import com.genersoft.iot.vmp.streamProxy.dto.StreamProxyDisplayDTO;
 import com.genersoft.iot.vmp.vmanager.bean.WVPResult;
 
 import java.util.List;
@@ -165,4 +166,13 @@ public interface IMediaServerService {
     void seekRecordStamp(MediaServer mediaServer, String app, String stream, Double stamp, String schema);
 
     void setRecordSpeed(MediaServer mediaServer, String app, String stream, Integer speed, String schema);
+
+
+
+    /**
+     * 获取所有节点正在拉流的设备
+     * @return
+     */
+    List<Map<String, Object>> getStreamInfoByAppAndStreamWithCheckAll(String mediaServerId);
+
 }
