@@ -21,16 +21,16 @@ spring:
     # [可选] 数据库 DB
     database: 7
     # [可选] 访问密码,若你的redis服务器没有设置密码，就不需要用密码去连接
-    password: luna
+    password:
     # [可选] 超时时间
     timeout: 10000
     # mysql数据源
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/wvp273数据库统合?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3306/wvp273?useUnicode=true&characterEncoding=UTF8&rewriteBatchedStatements=true&serverTimezone=PRC&useSSL=false&allowMultiQueries=true&allowPublicKeyRetrieval=true
     username: root
-    password: 12345678
+    password: 123456
 #[可选] WVP监听的HTTP端口, 网页和接口调用都是这个端口
 server:
   port: 18080
@@ -65,11 +65,11 @@ sip:
 media:
   id: zlmediakit-local
   # [必须修改] zlm服务器的内网IP
-  ip: 192.168.1.10
+  ip: 192.168.0.5
   # [必须修改] zlm服务器的http.port
-  http-port: 9092
+  http-port: 3339
   # [必选选] zlm服务器的hook.admin_params=secret
-  secret: TWSYFgYJOQWB4ftgeYut8DW4wbs7pQnj
+  secret: iTrxwBnfOUriX1HOc3PqOgCyUOxaWjlc
   # 启用多端口模式, 多端口模式使用端口区分每路流，兼容性更好。 单端口使用流的ssrc区分， 点播超时建议使用多端口测试
   rtp:
     # [可选] 是否启用多端口模式, 开启后会在portRange范围内选择端口用于媒体流传输
@@ -90,4 +90,26 @@ user-settings:
   record-sip: true
   # 国标点播 按需拉流, true：有人观看拉流，无人观看释放， false：拉起后不自动释放
   stream-on-demand: true
+security:
+  ignores:
+    - /
+    - /#/**
+    - /static/**
+    - /swagger-ui.html
+    - /swagger-ui/**
+    - /swagger-resources/**
+    - /doc.html
+    - /doc.html#/**
+    - /v3/api-docs/**
+    - /index.html
+    - /webjars/**
+    - /js/**
+    - /api/device/query/snap/**
+    - /record_proxy/*/**
+    - /api/emit
+    - /favicon.ico
+    - /api/user/login
+    - /index/hook/**
+    - /index/hook/abl/**
+    - /api/isStatus
 

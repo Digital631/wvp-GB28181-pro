@@ -55,6 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
+    private SecurityIgnoreProperties ignoreProperties;
 
     /**
      * 配置认证方式
@@ -76,32 +78,43 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //List<String> defaultExcludes = new ArrayList<>();
+        //defaultExcludes.add("/");
+        //defaultExcludes.add("/#/**");
+        //defaultExcludes.add("/static/**");
+        //
+        //defaultExcludes.add("/swagger-ui.html");
+        //defaultExcludes.add("/swagger-ui/**");
+        //defaultExcludes.add("/swagger-resources/**");
+        //defaultExcludes.add("/doc.html");
+        //defaultExcludes.add("/doc.html#/**");
+        //defaultExcludes.add("/v3/api-docs/**");
+        //
+        //defaultExcludes.add("/index.html");
+        //defaultExcludes.add("/webjars/**");
+        //
+        //defaultExcludes.add("/js/**");
+        //defaultExcludes.add("/api/device/query/snap/**");
+        //defaultExcludes.add("/record_proxy/*/**");
+        //defaultExcludes.add("/api/emit");
+        //defaultExcludes.add("/favicon.ico");
+        //defaultExcludes.add("/api/user/login");
+        //defaultExcludes.add("/index/hook/**");
+        //defaultExcludes.add("/api/device/query/snap/**");
+        //defaultExcludes.add("/index/hook/abl/**");
+        //defaultExcludes.add("/api/isStatus");
+
         List<String> defaultExcludes = new ArrayList<>();
-        defaultExcludes.add("/");
-        defaultExcludes.add("/#/**");
-        defaultExcludes.add("/static/**");
 
-        defaultExcludes.add("/swagger-ui.html");
-        defaultExcludes.add("/swagger-ui/**");
-        defaultExcludes.add("/swagger-resources/**");
-        defaultExcludes.add("/doc.html");
-        defaultExcludes.add("/doc.html#/**");
-        defaultExcludes.add("/v3/api-docs/**");
+        // 加载 yml 中的 ignore 路径
+        if (ignoreProperties.getIgnores() != null) {
+            defaultExcludes.addAll(ignoreProperties.getIgnores());
+        }
 
-        defaultExcludes.add("/index.html");
-        defaultExcludes.add("/webjars/**");
-
-        defaultExcludes.add("/js/**");
-        defaultExcludes.add("/api/device/query/snap/**");
-        defaultExcludes.add("/record_proxy/*/**");
-        defaultExcludes.add("/api/emit");
-        defaultExcludes.add("/favicon.ico");
-        defaultExcludes.add("/api/user/login");
-        defaultExcludes.add("/index/hook/**");
-        defaultExcludes.add("/api/device/query/snap/**");
-        defaultExcludes.add("/index/hook/abl/**");
-
-
+        // 加载自定义排除配置
+        if (userSetting.getInterfaceAuthentication() && !userSetting.getInterfaceAuthenticationExcludes().isEmpty()) {
+            defaultExcludes.addAll(userSetting.getInterfaceAuthenticationExcludes());
+        }
 
         if (userSetting.getInterfaceAuthentication() && !userSetting.getInterfaceAuthenticationExcludes().isEmpty()) {
             defaultExcludes.addAll(userSetting.getInterfaceAuthenticationExcludes());
