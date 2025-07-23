@@ -97,7 +97,7 @@ public interface StreamProxyMapper {
             " WHERE id=#{id}")
     void addStream(StreamProxy streamProxy);
 
-    @Select(            "SELECT\n" +
+    @Select("SELECT\n" +
             "    COALESCE(wdc.gb_name, '') AS name,\n" +
             "    CASE\n" +
             "        WHEN a.pulling = 1 THEN '正在拉流'\n" +
